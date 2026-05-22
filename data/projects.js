@@ -1,4 +1,4 @@
-[
+window.PROJECTS = [
   {
     "title": "Study Planner App",
     "cycle": "Cycle 01",
@@ -32,4 +32,4 @@
     "repo": "",
     "demo": ""
   }
-]
+];
