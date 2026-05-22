@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ETOZ Tech Community</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── RESET & ROOT ───────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #080613;
+      --bg2:       #0f0d1e;
+      --bg3:       #160f2a;
+      --border:    rgba(139,92,246,0.18);
+      --border-hi: rgba(139,92,246,0.55);
+      --violet:    #8B5CF6;
+      --violet-lo: #6D28D9;
+      --acid:      #a78bfa;
+      --mint:      #34d399;
+      --white:     #f0eeff;
+      --grey:      #6b7280;
+      --dimmed:    #9ca3af;
+      --glow:      0 0 32px rgba(139,92,246,0.25);
+      --glow-sm:   0 0 12px rgba(139,92,246,0.3);
+      --mono:      'Space Mono', monospace;
+      --sans:      'Outfit', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--sans);
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* grid overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* scanline effect */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    section, nav, footer { position: relative; z-index: 1; }
+
+    /* ── SCROLLBAR ──────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--violet-lo); border-radius: 2px; }
+
+    /* ── NAV ────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3rem;
+      height: 60px;
+      background: rgba(8,6,19,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--violet);
+      letter-spacing: 0.08em;
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--white); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--dimmed);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--violet); }
+
+    /* ── HERO ───────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 3rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* big blurred orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+    .orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(109,40,217,0.35), transparent 70%);
+      top: -100px; left: -100px;
+    }
+    .orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(52,211,153,0.12), transparent 70%);
+      bottom: 80px; right: 80px;
+    }
+
+    .hero-tag {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mint);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hero-tag::before {
+      content: '';
+      display: inline-block;
+      width: 32px; height: 1px;
+      background: var(--mint);
+    }
+
+    .hero-title {
+      font-family: var(--mono);
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title .line-1 { color: var(--white); display: block; }
+    .hero-title .line-2 {
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--violet);
+      display: block;
+    }
+    .hero-title .line-3 { color: var(--violet); display: block; }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--dimmed);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      line-height: 1.75;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.85rem 2rem;
+      border-radius: 3px;
+      transition: all 0.25s;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: var(--violet);
+      color: #fff;
+      box-shadow: var(--glow-sm);
+    }
+
+    .btn-primary:hover {
+      background: #7c3aed;
+      box-shadow: var(--glow);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--dimmed);
+      border: 1px solid var(--border-hi);
+    }
+
+    .btn-ghost:hover {
+      color: var(--violet);
+      border-color: var(--violet);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats {
+      position: absolute;
+      right: 4rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .stat-card {
+      border: 1px solid var(--border);
+      background: rgba(139,92,246,0.05);
+      padding: 1.25rem 1.5rem;
+      border-radius: 6px;
+      text-align: center;
+      min-width: 130px;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--border-hi);
+      box-shadow: var(--glow-sm);
+    }
+
+    .stat-num {
+      font-family: var(--mono);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--violet);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--grey);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 0.25rem;
+    }
+
+    /* typewriter cursor */
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 0.85em;
+      background: var(--violet);
+      margin-left: 4px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── SECTION SHARED ─────────────────────────────────── */
+    section {
+      padding: 6rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    section.full-width {
+      max-width: none;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .section-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--violet);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-eyebrow::after {
+      content: '';
+      flex: 1;
+      max-width: 60px;
+      height: 1px;
+      background: var(--border-hi);
+    }
+
+    .section-title {
+      font-family: var(--mono);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+    }
+
+    .section-desc {
+      color: var(--dimmed);
+      max-width: 580px;
+      font-size: 1rem;
+      line-height: 1.75;
+      margin-bottom: 3rem;
+    }
+
+    /* ── ABOUT ──────────────────────────────────────────── */
+    #about {
+      border-top: 1px solid var(--border);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 3rem;
+    }
+
+    .about-cell {
+      background: var(--bg);
+      padding: 2rem;
+      transition: background 0.25s;
+    }
+
+    .about-cell:hover { background: var(--bg3); }
+
+    .about-cell-icon {
+      font-size: 1.6rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .about-cell h3 {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--violet);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .about-cell p {
+      font-size: 0.9rem;
+      color: var(--dimmed);
+      line-height: 1.7;
+    }
+
+    /* ── ACTIVITIES INTRO ───────────────────────────────── */
+    #activities {
+      border-top: 1px solid var(--border);
+    }
+
+    .activity-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .activity-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2.5rem;
+      background: var(--bg2);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    }
+
+    .activity-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--violet), transparent);
+    }
+
+    .activity-card:hover {
+      border-color: var(--border-hi);
+      box-shadow: var(--glow);
+      transform: translateY(-4px);
+    }
+
+    .activity-num {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--violet);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .activity-card h3 {
+      font-family: var(--mono);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .activity-card p {
+      font-size: 0.9rem;
+      color: var(--dimmed);
+      line-height: 1.75;
+      margin-bottom: 1.5rem;
+    }
+
+    .activity-steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-bottom: 2rem;
+    }
+
+    .activity-steps li {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      font-size: 0.85rem;
+      color: var(--dimmed);
+    }
+
+    .step-dot {
+      width: 6px; height: 6px;
+      background: var(--violet);
+      border-radius: 50%;
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+
+    /* ── TALKSHOWS ──────────────────────────────────────── */
+    #talkshows {
+      border-top: 1px solid var(--border);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg2);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      border-color: var(--border-hi);
+      box-shadow: var(--glow-sm);
+      transform: translateY(-3px);
+    }
+
+    .card-date {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      color: var(--violet);
+      text-transform: uppercase;
+    }
+
+    .card-title {
+      font-family: var(--sans);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.4;
+    }
+
+    .card-host {
+      font-size: 0.78rem;
+      color: var(--grey);
+    }
+
+    .card-host span { color: var(--acid); }
+
+    .card-desc {
+      font-size: 0.83rem;
+      color: var(--dimmed);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      background: rgba(139,92,246,0.12);
+      color: var(--acid);
+      border: 1px solid rgba(139,92,246,0.25);
+      border-radius: 3px;
+      padding: 0.2rem 0.55rem;
+    }
+
+    .card-link {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--violet);
+      text-decoration: none;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: gap 0.2s, color 0.2s;
+    }
+
+    .card-link:hover { gap: 0.7rem; color: var(--acid); }
+
+    .card-status {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+
+    .status-live    { background: var(--mint); box-shadow: 0 0 8px var(--mint); animation: pulse 2s infinite; }
+    .status-done    { background: var(--grey); }
+    .status-planned { background: var(--violet); }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.3); }
+    }
+
+    /* ── PROJECTS ───────────────────────────────────────── */
+    #projects {
+      border-top: 1px solid var(--border);
+    }
+
+    .project-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg2);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+      position: relative;
+    }
+
+    .project-card:hover {
+      border-color: var(--border-hi);
+      box-shadow: var(--glow-sm);
+      transform: translateY(-3px);
+    }
+
+    .project-card::after {
+      content: attr(data-stream);
+      position: absolute;
+      bottom: 1.75rem;
+      right: 1.75rem;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--border-hi);
+    }
+
+    .project-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .project-cycle {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .project-desc {
+      font-size: 0.83rem;
+      color: var(--dimmed);
+      line-height: 1.65;
+    }
+
+    .project-team {
+      font-size: 0.78rem;
+      color: var(--grey);
+    }
+
+    .project-team span { color: var(--acid); }
+
+    .project-links {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.25rem;
+    }
+
+    /* stream color accents */
+    [data-stream="software"]  .project-cycle { color: #818cf8; }
+    [data-stream="backend"]   .project-cycle { color: #a78bfa; }
+    [data-stream="iot"]       .project-cycle { color: var(--mint); }
+    [data-stream="ai"]        .project-cycle { color: #f472b6; }
+    [data-stream="security"]  .project-cycle { color: #fb923c; }
+
+    /* ── EMPTY & LOADING STATES ─────────────────────────── */
+    .state-msg {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--grey);
+      letter-spacing: 0.08em;
+      padding: 3rem;
+      text-align: center;
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+      grid-column: 1 / -1;
+    }
+
+    .state-msg .blink { animation: blink 1s step-end infinite; }
+
+    /* ── CTA BAND ───────────────────────────────────────── */
+    #join {
+      border-top: 1px solid var(--border);
+    }
+
+    .cta-band {
+      background: linear-gradient(135deg, var(--bg3) 0%, rgba(109,40,217,0.15) 100%);
+      border: 1px solid var(--border-hi);
+      border-radius: 12px;
+      padding: 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-band::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 120%, rgba(139,92,246,0.2), transparent 60%);
+      pointer-events: none;
+    }
+
+    .cta-band h2 {
+      font-family: var(--mono);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .cta-band p {
+      color: var(--dimmed);
+      max-width: 480px;
+      margin: 0 auto 2rem;
+      font-size: 0.95rem;
+      line-height: 1.75;
+    }
+
+    .cta-ways {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .way-pill {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(139,92,246,0.1);
+      border: 1px solid var(--border-hi);
+      border-radius: 100px;
+      padding: 0.5rem 1.25rem;
+      color: var(--acid);
+    }
+
+    /* ── FOOTER ─────────────────────────────────────────── */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--violet);
+      letter-spacing: 0.08em;
+    }
+
+    .footer-tagline {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--grey);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-contact {
+      font-size: 0.8rem;
+      color: var(--grey);
+    }
+
+    .footer-contact a { color: var(--acid); text-decoration: none; }
+    .footer-contact a:hover { color: var(--violet); }
+
+    /* ── DIVIDER ────────────────────────────────────────── */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .view-all {
+      margin-top: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .view-all::before {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── SCROLL REVEAL ──────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* stagger children */
+    .stagger > * { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .stagger.visible > *:nth-child(1) { opacity:1; transform:none; transition-delay: 0.05s; }
+    .stagger.visible > *:nth-child(2) { opacity:1; transform:none; transition-delay: 0.12s; }
+    .stagger.visible > *:nth-child(3) { opacity:1; transform:none; transition-delay: 0.19s; }
+    .stagger.visible > *:nth-child(4) { opacity:1; transform:none; transition-delay: 0.26s; }
+    .stagger.visible > *:nth-child(5) { opacity:1; transform:none; transition-delay: 0.33s; }
+    .stagger.visible > *:nth-child(6) { opacity:1; transform:none; transition-delay: 0.40s; }
+    .stagger.visible > *:nth-child(n+7) { opacity:1; transform:none; transition-delay: 0.47s; }
+
+    /* ── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      #hero { padding: 7rem 1.5rem 3rem; }
+      .hero-stats { display: none; }
+      section { padding: 4rem 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      .activity-split { grid-template-columns: 1fr; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .cta-band { padding: 2.5rem 1.5rem; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ─────────────────────────────────────────── -->
+  <nav>
+    <a href="#" class="nav-logo">ETOZ<span>_tech</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#activities">Activities</a></li>
+      <li><a href="#talkshows">Talk Shows</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#join">Join Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ────────────────────────────────────────── -->
+  <section id="hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="hero-tag">Student-Led · Online · Open to All</div>
+
+    <h1 class="hero-title">
+      <span class="line-1">Learn.</span>
+      <span class="line-2">Explore.</span>
+      <span class="line-3">Build<span class="cursor"></span></span>
+    </h1>
+
+    <p class="hero-sub">
+      ETOZ Tech Community is a student-run space to explore technology through talk shows,
+      mini workshops, and collaborative projects — no prior experience required.
+    </p>
+
+    <div class="hero-cta">
+      <a href="#join" class="btn btn-primary">↗ Get Involved</a>
+      <a href="#talkshows" class="btn btn-ghost">View Talk Shows</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-card">
+        <span class="stat-num" id="stat-talks">—</span>
+        <div class="stat-label">Talk Shows</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" id="stat-projects">—</span>
+        <div class="stat-label">Projects</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">100%</span>
+        <div class="stat-label">Online</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ────────────────────────────────────────── -->
+  <section id="about">
+    <div class="section-eyebrow">About</div>
+    <h2 class="section-title reveal">What is ETOZ?</h2>
+    <p class="section-desc reveal">
+      A student-led technology community built around one idea: that the best way to learn
+      is to build, share, and explore together — with no pressure and no gatekeeping.
+    </p>
+
+    <div class="about-grid stagger">
+      <div class="about-cell">
+        <div class="about-cell-icon">🟢</div>
+        <h3>Beginner-Friendly</h3>
+        <p>You don't need experience to join. Ask questions, make mistakes, and learn at your own pace. Everyone starts somewhere.</p>
+      </div>
+      <div class="about-cell">
+        <div class="about-cell-icon">🔧</div>
+        <h3>Practical</h3>
+        <p>Everything we do connects to real tools and real workflows. No fluff — just hands-on exploration that means something.</p>
+      </div>
+      <div class="about-cell">
+        <div class="about-cell-icon">🤝</div>
+        <h3>Collaborative</h3>
+        <p>We learn from each other. Students lead sessions, share knowledge, and work on projects together — not in isolation.</p>
+      </div>
+      <div class="about-cell">
+        <div class="about-cell-icon">📅</div>
+        <h3>Flexible</h3>
+        <p>Join when you can. There are no attendance requirements or rigid schedules — contribute as much or as little as suits you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ACTIVITIES ───────────────────────────────────── -->
+  <section id="activities">
+    <div class="section-eyebrow">Activities</div>
+    <h2 class="section-title reveal">Two ways to participate</h2>
+    <p class="section-desc reveal">
+      Everything we do falls into one of two modes. You can join either, both, or simply
+      observe — there's no wrong way to be part of the community.
+    </p>
+
+    <div class="activity-split stagger">
+      <div class="activity-card">
+        <div class="activity-num">// Activity 01</div>
+        <h3>Talk Shows &amp; Mini Workshops</h3>
+        <p>Short, casual sessions where someone shares a concept, tool, or project with the group. Not a lecture — more like an open conversation with a live demo.</p>
+        <ul class="activity-steps">
+          <li><span class="step-dot"></span>Anyone proposes a topic — no approval needed</li>
+          <li><span class="step-dot"></span>Host runs a short, informal walkthrough live</li>
+          <li><span class="step-dot"></span>Group participates — questions, tries things, discusses</li>
+          <li><span class="step-dot"></span>Session gets documented and archived on GitHub</li>
+        </ul>
+        <a href="#talkshows" class="card-link">Browse sessions →</a>
+      </div>
+
+      <div class="activity-card">
+        <div class="activity-num">// Activity 02</div>
+        <h3>Collaborative Mini Projects</h3>
+        <p>Small groups work together toward a shared technical goal over 1–2 weeks. Projects are intentionally scoped to be completable, not overwhelming.</p>
+        <ul class="activity-steps">
+          <li><span class="step-dot"></span>Students self-organise around a shared interest</li>
+          <li><span class="step-dot"></span>Group agrees on a small, achievable goal</li>
+          <li><span class="step-dot"></span>Work async via GitHub + short sync check-ins</li>
+          <li><span class="step-dot"></span>Cycle ends with a group showcase</li>
+        </ul>
+        <a href="#projects" class="card-link">Browse projects →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TALK SHOWS ────────────────────────────────────── -->
+  <section id="talkshows">
+    <div class="section-eyebrow">Talk Shows</div>
+    <h2 class="section-title reveal">Recent Sessions</h2>
+    <p class="section-desc reveal">
+      Browse past and upcoming talk shows. Each entry links to its notes, recording, or
+      repository so you can revisit anything you missed.
+    </p>
+
+    <div class="cards-grid stagger" id="talkshows-grid">
+      <div class="state-msg"><span class="blink">▍</span> Loading sessions...</div>
+    </div>
+
+    <div class="view-all reveal">
+      <a href="talkshows/" class="card-link">View all sessions &amp; archive →</a>
+    </div>
+  </section>
+
+  <!-- ── PROJECTS ──────────────────────────────────────── -->
+  <section id="projects">
+    <div class="section-eyebrow">Projects</div>
+    <h2 class="section-title reveal">Active &amp; Past Projects</h2>
+    <p class="section-desc reveal">
+      Mini-project cycles are short by design — a focused 1–2 week sprint to build
+      something real together. Find the repos, contributors, and outcomes below.
+    </p>
+
+    <div class="cards-grid stagger" id="projects-grid">
+      <div class="state-msg"><span class="blink">▍</span> Loading projects...</div>
+    </div>
+
+    <div class="view-all reveal">
+      <a href="projects/" class="card-link">View all projects &amp; repositories →</a>
+    </div>
+  </section>
+
+  <!-- ── JOIN ──────────────────────────────────────────── -->
+  <section id="join">
+    <div class="cta-band reveal">
+      <h2>Ready to join?</h2>
+      <p>
+        There's no application, no requirements, and no commitment.
+        Just show up, explore something, and see where it takes you.
+      </p>
+      <div class="cta-ways">
+        <span class="way-pill">Attend a session</span>
+        <span class="way-pill">Join a project</span>
+        <span class="way-pill">Run your own talk</span>
+        <span class="way-pill">Ask a question</span>
+      </div>
+      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+        <a href="mailto:etozforyou@gmail.com" class="btn btn-primary">✉ Get in touch</a>
+        <a href="https://github.com" class="btn btn-ghost">★ Star on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ────────────────────────────────────────── -->
+  <footer>
+    <div>
+      <div class="footer-logo">ETOZ_tech</div>
+      <div class="footer-tagline" style="margin-top:0.35rem;">Learn · Explore · Build Together</div>
+    </div>
+    <div class="footer-contact">
+      <a href="mailto:etozforyou@gmail.com">etozforyou@gmail.com</a>
+      &nbsp;·&nbsp; 0435 866 881
+    </div>
+  </footer>
+
+  <!-- ── SCRIPTS ───────────────────────────────────────── -->
+  <script>
+  // ── Scroll Reveal ──────────────────────────────────────
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal, .stagger').forEach(el => observer.observe(el));
+
+  // ── Helpers ────────────────────────────────────────────
+  function statusDot(status) {
+    const map = { live: 'status-live', done: 'status-done', planned: 'status-planned' };
+    return `<div class="card-status ${map[status] || 'status-done'}" title="${status}"></div>`;
+  }
+
+  function tagList(tags = []) {
+    return tags.map(t => `<span class="tag">${t}</span>`).join('');
+  }
+
+  // ── Render Talk Shows ──────────────────────────────────
+  function renderTalkShows(data) {
+    const grid = document.getElementById('talkshows-grid');
+    document.getElementById('stat-talks').textContent = data.length;
+
+    if (!data.length) {
+      grid.innerHTML = `<div class="state-msg">No sessions yet — be the first to run one.</div>`;
+      return;
+    }
+
+    grid.innerHTML = data.map(t => `
+      <div class="card">
+        ${statusDot(t.status)}
+        <div class="card-date">${t.date}</div>
+        <div class="card-title">${t.title}</div>
+        <div class="card-host">Hosted by <span>${t.host}</span></div>
+        <div class="card-desc">${t.description}</div>
+        <div class="card-tags">${tagList(t.tags)}</div>
+        ${t.link
+          ? `<a href="${t.link}" class="card-link" target="_blank" rel="noopener">View notes &amp; resources →</a>`
+          : `<span style="font-family:var(--mono);font-size:0.7rem;color:var(--grey);">Notes coming soon</span>`
+        }
+      </div>
+    `).join('');
+
+    // re-observe new cards for stagger
+    grid.querySelectorAll('.card').forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.07}s`;
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, border-color 0.25s, box-shadow 0.25s';
+      observer.observe(el);
+    });
+  }
+
+  // ── Render Projects ────────────────────────────────────
+  function renderProjects(data) {
+    const grid = document.getElementById('projects-grid');
+    document.getElementById('stat-projects').textContent = data.length;
+
+    if (!data.length) {
+      grid.innerHTML = `<div class="state-msg">No projects yet — propose one in the community.</div>`;
+      return;
+    }
+
+    const streamColor = {
+      software: '#818cf8', backend: '#a78bfa', iot: '#34d399',
+      ai: '#f472b6', security: '#fb923c'
+    };
+
+    grid.innerHTML = data.map(p => {
+      const color = streamColor[p.stream] || '#a78bfa';
+      return `
+        <div class="project-card" data-stream="${p.stream}">
+          ${statusDot(p.status)}
+          <div class="project-cycle" style="color:${color}">${p.cycle} · ${p.stream.toUpperCase()}</div>
+          <div class="project-title">${p.title}</div>
+          <div class="project-desc">${p.description}</div>
+          <div class="project-team">Team: <span>${p.team.join(', ')}</span></div>
+          <div class="card-tags">${tagList(p.tags)}</div>
+          <div class="project-links">
+            ${p.repo
+              ? `<a href="${p.repo}" class="card-link" target="_blank" rel="noopener">GitHub repo →</a>`
+              : `<span style="font-family:var(--mono);font-size:0.7rem;color:var(--grey);">Repo coming soon</span>`
+            }
+            ${p.demo
+              ? `<a href="${p.demo}" class="card-link" target="_blank" rel="noopener">Live demo →</a>`
+              : ''
+            }
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    grid.querySelectorAll('.project-card').forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.07}s`;
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, border-color 0.25s, box-shadow 0.25s';
+      observer.observe(el);
+    });
+  }
+
+  // ── Fetch Data ─────────────────────────────────────────
+  async function loadData() {
+    try {
+      const [tsRes, prRes] = await Promise.all([
+        fetch('data/talkshows.json'),
+        fetch('data/projects.json')
+      ]);
+
+      if (!tsRes.ok || !prRes.ok) throw new Error('fetch failed');
+
+      const [talkshows, projects] = await Promise.all([
+        tsRes.json(),
+        prRes.json()
+      ]);
+
+      renderTalkShows(talkshows);
+      renderProjects(projects);
+
+    } catch (err) {
+      document.getElementById('talkshows-grid').innerHTML =
+        `<div class="state-msg">Could not load sessions — make sure <code>data/talkshows.json</code> exists.</div>`;
+      document.getElementById('projects-grid').innerHTML =
+        `<div class="state-msg">Could not load projects — make sure <code>data/projects.json</code> exists.</div>`;
+      console.error('ETOZ data load error:', err);
+    }
+  }
+
+  loadData();
+  </script>
+</body>
+</html>

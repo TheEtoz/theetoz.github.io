@@ -1,0 +1,29 @@
+[
+  {
+    "title": "Git in 15 Minutes — Version Control for Everyone",
+    "date": "2025-06-01",
+    "host": "ETOZ Team",
+    "status": "done",
+    "description": "A quick, practical walkthrough of the core Git workflow — init, add, commit, push, and pull. No theory overload, just the commands you'll actually use every day.",
+    "tags": ["git", "version control", "beginner"],
+    "link": ""
+  },
+  {
+    "title": "What Even is an API?",
+    "date": "2025-06-15",
+    "host": "ETOZ Team",
+    "status": "done",
+    "description": "We broke down how APIs work using real-world analogies and live calls to a public API. By the end, everyone understood what was happening when an app talks to a server.",
+    "tags": ["api", "web", "beginner"],
+    "link": ""
+  },
+  {
+    "title": "Intro to Python OpenCV",
+    "date": "2025-07-05",
+    "host": "ETOZ Team",
+    "status": "planned",
+    "description": "A hands-on session exploring computer vision basics with Python and OpenCV — reading images, applying filters, and detecting shapes in real time.",
+    "tags": ["python", "opencv", "computer vision"],
+    "link": ""
+  }
+]
