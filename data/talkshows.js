@@ -1,4 +1,4 @@
-[
+window.TALKSHOWS = [
   {
     "title": "Git in 15 Minutes — Version Control for Everyone",
     "date": "2025-06-01",
@@ -26,4 +26,4 @@
     "tags": ["python", "opencv", "computer vision"],
     "link": ""
   }
-]
+];
